@@ -11,10 +11,14 @@ import (
 	"text/template"
 	"time"
 	"unicode/utf8"
+	"github.com/joyleewei/goblog/pkg/route"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
+
+var router *mux.Router
+var db *sql.DB
 
 type ArticlesFormData struct {
 	Title, Body string
@@ -39,8 +43,6 @@ func (a Article) Link() string {
 	return showURL.String()
 }
 
-var router = mux.NewRouter()
-var db *sql.DB
 
 func initDB() {
 	var err error
@@ -494,6 +496,10 @@ func Int64ToString(num int64) string {
 func main() {
 	initDB()
 	createTables()
+
+	route.Initialize()
+	router = route.Router
+
 
 	router.HandleFunc("/", homeHandler).Methods("GET").Name("home")
 	router.HandleFunc("/about", aboutHandler).Methods("GET").Name("about")
