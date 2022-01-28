@@ -15,6 +15,7 @@ import (
 	"github.com/joyleewei/goblog/pkg/logger"
 	"github.com/joyleewei/goblog/pkg/route"
 	"github.com/joyleewei/goblog/pkg/types"
+	"github.com/joyleewei/goblog/bootstrap"
 	
 	"github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -487,6 +488,8 @@ func getRouteVariable(parameterName string, r *http.Request) string {
 func main() {
 	database.Initialize()
 	db = database.DB
+
+	bootstrap.SetupDB()
 
 	router = bootstrap.SetupRoute()
 
