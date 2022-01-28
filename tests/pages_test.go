@@ -48,11 +48,8 @@ func TestAllPages(t *testing.T) {
 		method string
 		url string
 		expected int
-<<<<<<< HEAD
 	}{
-=======
-	} {
->>>>>>> 67d240b89a5eecec27d99abdfae2be1eef8fced5
+
 		{"GET", "/", 200},
 		{"GET", "/about", 200},
 		{"GET", "/notfound", 404},
@@ -68,8 +65,6 @@ func TestAllPages(t *testing.T) {
 	// 2. 遍历所有测试
 	for _, test := range tests {
 		t.Logf("当前请求 URL: %v \n", test.url)
-<<<<<<< HEAD
-		
 		var (
 			resp *http.Response
 			err error
@@ -88,25 +83,4 @@ func TestAllPages(t *testing.T) {
 		assert.NoError(t, err, "请求 " + test.url + " 时报错")
 		assert.Equal(t, test.expected, resp.StatusCode, test.url + " 应返回状态码" + strconv.Itoa(test.expected))
 	}
-=======
-	}
-
-	var (
-		resp *http.Response
-		err error
-	)
-
-	// 2.1 请求以获取响应
-	switch {
-	case test.method == "POST":
-		data := make(map[string][]string)
-		resp, err = http.PostForm(baseURL + test.url, data)
-	default:
-		resp, err = http.Get(baseURL + test.url)
-	}
-
-	// 2.2 断言
-	assert.NoError(t, err, "请求 " + test.url + " 时报错")
-	assert.Equal(t, test.expected, resp.StatusCode, test.url + " 应返回状态码" + strconv.Itoa(test.expected))
->>>>>>> 67d240b89a5eecec27d99abdfae2be1eef8fced5
 }
