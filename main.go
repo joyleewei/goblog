@@ -10,10 +10,11 @@ import (
 	"text/template"
 	"time"
 	"unicode/utf8"
+	"github.com/joyleewei/goblog/pkg/database"
 	"github.com/joyleewei/goblog/pkg/logger"
 	"github.com/joyleewei/goblog/pkg/route"
 	"github.com/joyleewei/goblog/pkg/types"
-
+	
 	"github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
@@ -479,8 +480,8 @@ func RouteName2URL(routeName string, pairs ...string) string {
 
 
 func main() {
-	initDB()
-	createTables()
+	database.Initialize()
+	db = database.DB
 
 	route.Initialize()
 	router = route.Router
