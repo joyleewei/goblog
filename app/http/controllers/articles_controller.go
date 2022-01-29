@@ -1,15 +1,15 @@
 package controllers
 
 import (
-	"database/sql"
 	"fmt"
 	"net/http"
 	"text/template"
 
+	"github.com/joyleewei/goblog/app/models/article"
 	"github.com/joyleewei/goblog/pkg/logger"
 	"github.com/joyleewei/goblog/pkg/route"
 	"github.com/joyleewei/goblog/pkg/types"
-	"github.com/joyleewei/goblog/app/models/article"
+	"gorm.io/gorm"
 )
 
 // ArticlesController 文章相关页面
@@ -26,7 +26,7 @@ func (*ArticlesController) Show(w http.ResponseWriter, r *http.Request) {
 
 	// 3. 如果出现错误
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if err == gorm.ErrRecordNotFound {
 			// 3.1 数据未找到
 			w.WriteHeader(http.StatusNotFound)
 			fmt.Fprint(w, "404 文章未找到")
@@ -37,12 +37,6 @@ func (*ArticlesController) Show(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprint(w, "500 服务器内部错误")
 		}
 	} else {
-		/*
-		idStr := types.Uint64ToString(article.ID)
-		url := route.Name2URL("articles.delete", "id", idStr)
-		fmt.Println(idStr)
-		fmt.Println(url)
-		*/
 		// 4. 读取成功，显示文章
 		tmpl, err := template.New("show.gohtml").
 			Funcs(template.FuncMap{
@@ -59,6 +53,6 @@ func (*ArticlesController) Show(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (*ArticlesController) ArticlesDeleteHandler(w http.ResponseWriter, r *http.Request) string {
-	return "delete"
+func (*ArticlesController) Delete(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("delete here")
 }

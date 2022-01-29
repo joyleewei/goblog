@@ -2,8 +2,9 @@ package database
 
 import (
 	"database/sql"
-	"github.com/joyleewei/goblog/pkg/logger"
 	"time"
+
+	"github.com/joyleewei/goblog/pkg/logger"
 
 	"github.com/go-sql-driver/mysql"
 )
@@ -22,11 +23,11 @@ func initDB() {
 
 	// 设置数据库连接信息
 	config := mysql.Config{
-		User: "root",
-		Passwd: "123456",
-		Addr: "127.0.0.1:3306",
-		Net: "tcp",
-		DBName: "goblog1",
+		User:                 "liwei",
+		Passwd:               "123456",
+		Addr:                 "192.168.0.109:3306",
+		Net:                  "tcp",
+		DBName:               "goblog1",
 		AllowNativePasswords: true,
 	}
 
