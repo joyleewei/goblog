@@ -9,6 +9,7 @@ import (
 	"github.com/joyleewei/goblog/pkg/logger"
 	"github.com/joyleewei/goblog/pkg/route"
 	"github.com/joyleewei/goblog/pkg/types"
+	"github.com/joyleewei/goblog/app/models/article"
 )
 
 // ArticlesController 文章相关页面
@@ -21,7 +22,7 @@ func (*ArticlesController) Show(w http.ResponseWriter, r *http.Request) {
 	id := route.GetRouteVariable("id", r)
 
 	// 2. 读取对应的文章数据
-	article, err := getArticleByID(id)
+	article, err := article.Get(id)
 
 	// 3. 如果出现错误
 	if err != nil {
@@ -36,11 +37,17 @@ func (*ArticlesController) Show(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprint(w, "500 服务器内部错误")
 		}
 	} else {
+		/*
+		idStr := types.Uint64ToString(article.ID)
+		url := route.Name2URL("articles.delete", "id", idStr)
+		fmt.Println(idStr)
+		fmt.Println(url)
+		*/
 		// 4. 读取成功，显示文章
 		tmpl, err := template.New("show.gohtml").
 			Funcs(template.FuncMap{
-				"RouteName2URL": route.Name2URL,
-				"Int64ToString": types.Int64ToString,
+				"RouteName2URL":  route.Name2URL,
+				"Uint64ToString": types.Uint64ToString,
 			}).
 			ParseFiles("resources/views/articles/show.gohtml")
 
@@ -50,4 +57,8 @@ func (*ArticlesController) Show(w http.ResponseWriter, r *http.Request) {
 		logger.LogError(err)
 	}
 
+}
+
+func (*ArticlesController) ArticlesDeleteHandler(w http.ResponseWriter, r *http.Request) string {
+	return "delete"
 }

@@ -18,4 +18,6 @@ func RegisterWebRoutes(r *mux.Router) {
 	// 文章相关页面
 	ac := new(controllers.ArticlesController)
 	r.HandleFunc("/articles/{id:[0-9]+}", ac.Show).Methods("GET").Name("articles.show")
+
+	router.HandleFunc("/articles/{id:[0-9+]}/delete", ac.ArticlesDeleteHandler).Methods("POST").Name("articles.delete")
 }
