@@ -10,11 +10,12 @@ import (
 	"text/template"
 	"time"
 	"unicode/utf8"
+
+	"github.com/joyleewei/goblog/bootstrap"
 	"github.com/joyleewei/goblog/pkg/database"
 	"github.com/joyleewei/goblog/pkg/logger"
 	"github.com/joyleewei/goblog/pkg/types"
-	"github.com/joyleewei/goblog/bootstrap"
-	
+
 	"github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
@@ -33,18 +34,6 @@ type Article struct {
 	Title, Body string
 	ID          int64
 }
-
-// Link 方法用来生成文章链接
-func (a Article) Link() string {
-	showURL, err := router.Get("articles.show").URL("id", strconv.FormatInt(a.ID, 10))
-	if err != nil {
-		logger.LogError(err)
-		return ""
-	}
-
-	return showURL.String()
-}
-
 
 func initDB() {
 	var err error
@@ -84,7 +73,6 @@ func createTables() {
 	_, err := db.Exec(createArticlesSQL)
 	logger.LogError(err)
 }
-
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "<h1>Hello, 欢迎来到 goblog！</h1>")
@@ -496,7 +484,6 @@ func main() {
 	router.HandleFunc("/articles", articlesStoreHandler).Methods("POST").Name("articles.store")
 	router.HandleFunc("/articles/{id:[0-9]+}/edit", articlesEditHandler).Methods("GET").Name("articles.edit")
 	router.HandleFunc("/articles/{id:[0-9]+}", articlesUpdateHandler).Methods("POST").Name("articles.update")
-	
 
 	// 中间件: 强制内容类型为 HTML
 	router.Use(forceHTMLMiddleware)
